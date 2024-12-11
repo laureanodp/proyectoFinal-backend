@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Middleware para encriptar contraseña
+// Middleware para encriptar contraseña antes de guardarla
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
   const salt = await bcrypt.genSalt(10);
@@ -18,4 +18,11 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
+// Método para comparar la contraseña ingresada con la almacenada
+userSchema.methods.matchPassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
+};
+
 module.exports = mongoose.model("User", userSchema);
+
+

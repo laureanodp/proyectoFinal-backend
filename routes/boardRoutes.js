@@ -4,7 +4,8 @@ const {
   getBoards,
   updateBoard,
   deleteBoard,
-} = require("../controllers/boardController");
+} = require("../controllers/boardController")
+
 const { protect } = require("../middleware/authMiddleware");
 
 const router = express.Router();
