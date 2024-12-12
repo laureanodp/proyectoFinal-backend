@@ -43,16 +43,21 @@ exports.updateTask = async (req, res) => {
     res.status(400).json({ error: "Error al actualizar la tarea" });
   }
 };
-
 exports.deleteTask = async (req, res) => {
   try {
     const task = await Task.findById(req.params.id);
     if (!task) {
       return res.status(404).json({ error: "Tarea no encontrada" });
     }
-    await task.remove();
+
+    // Eliminar la tarea
+    await Task.deleteOne({ _id: req.params.id });
+
     res.status(200).json({ message: "Tarea eliminada" });
   } catch (error) {
+    console.error("Error al eliminar la tarea:", error); // Log para depuración
     res.status(500).json({ error: "Error al eliminar la tarea" });
   }
 };
+
+
